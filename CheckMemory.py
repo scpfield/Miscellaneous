@@ -8,7 +8,7 @@ import linecache
 from functools import wraps
 
 # 
-# This annotator takes before-and-after snapshots of memory usage
+# This decorator takes before-and-after snapshots of memory usage
 # using the Python 'tracemalloc' package that should exist in 
 # Python 3.4 or higher.
 #
