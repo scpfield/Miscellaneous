@@ -31,7 +31,7 @@ from functools import wraps
 # https://docs.python.org/3.5/library/functools.html#functools.wraps
 #
 # For @wraps, I tried it, and it is true. Code inside of the 
-# annotated function that checks its own '__name__' attribute will 
+# decorated function that checks its own '__name__' attribute will 
 # get the wrapper function name unless you use the @wraps annotator 
 # on the wrapper function.
 #
