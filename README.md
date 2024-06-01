@@ -1,5 +1,6 @@
 # Miscellaneous
-Miscellaneous Things
+
+SynchronizingDecorator.py is a class and function decorator to protect non-thread safe code.
 
 CheckMemory.py is a function decorator that tells you how much memory it uses.
 
