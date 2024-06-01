@@ -294,6 +294,7 @@ def Synchronized( Target ):
                 if not hasattr( Target, '_Event_' ):
                 
                     _Event_ = threading.Event()
+                    _Event_.set()
                     setattr( Target, '_Event_', _Event_ )
                     
                 _Lock_  = getattr( Target, '_Lock_' )
