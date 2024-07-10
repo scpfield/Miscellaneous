@@ -20,6 +20,7 @@ Py_TPFLAGS_READYING                     = (1 << 13)
 Py_TPFLAGS_HAVE_GC                      = (1 << 14)
 Py_TPFLAGS_HAVE_STACKLESS_EXTENSION     = (3 << 15)
 Py_TPFLAGS_METHOD_DESCRIPTOR            = (1 << 17)
+Py_TPFLAGS_HAVE_VERSION_TAG             = (1 << 18)
 Py_TPFLAGS_VALID_VERSION_TAG            = (1 << 19)
 Py_TPFLAGS_IS_ABSTRACT                  = (1 << 20)
 Py_TPFLAGS_MATCH_SELF                   = (1 << 22)
@@ -32,7 +33,6 @@ Py_TPFLAGS_UNICODE_SUBCLASS             = (1 << 28)
 Py_TPFLAGS_DICT_SUBCLASS                = (1 << 29)
 Py_TPFLAGS_BASE_EXC_SUBCLASS            = (1 << 30)
 Py_TPFLAGS_TYPE_SUBCLASS                = (1 << 31)
-Py_TPFLAGS_HAVE_VERSION_TAG             = (1 << 18)
 
 
 # Example that shows how to edit readonly flags
