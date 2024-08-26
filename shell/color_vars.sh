@@ -106,9 +106,9 @@ NPE='\]'
 # Both general and bash-prompt formats are 
 # provided.
 
-RESET=${ESC}'0m'
-ITALIC=${ESC}'3m'
-UNDERLINE=${ESC}'4m'
+RESET="${ESC}0m"
+ITALIC="${ESC}3m"
+UNDERLINE="${ESC}4m"
 BLINK="${ESC}5m"
 REVERSE="${ESC}7m"
 STRIKETHROUGH="${ESC}9m"
@@ -141,24 +141,35 @@ for PRIMARY_COLOR in $PRIMARY_COLORS; do
     
         case $PRIMARY_COLOR in
 
-            "RED")
-                COLOR=${N}';0;0m';          ;;
+            "RED")                
+                COLOR="${N};0;0m"
+                ;;
             "GREEN")
-                COLOR='0;'${N}';0m';          ;;
+                COLOR="0;${N};0m"
+                ;;
             "BLUE")
-                COLOR='0;0;'${N}'m';          ;;
+                COLOR="0;0;${N}m"
+                ;;
             "YELLOW")
-                COLOR=${N}';'${N}';0m';       ;;
+                COLOR="${N};${N};0m"
+                ;;
             "MAGENTA")
-                COLOR=${N}';0;'${N}'m';       ;;
+                COLOR="${N};0;${N}m"
+                ;;
             "CYAN")
-                COLOR='0;'${N}';'${N}'m';       ;;
+                COLOR="0;${N};${N}m"
+                ;;
             "WHITE")
-                COLOR=${N}';'${N}';'${N}'m';    ;;
+                COLOR="${N};${N};${N}m"
+                ;;
         esac
 
-        # These are temp vars to store the names 
-        # of the color variables as strings
+        #
+        # Dynamically generate bash variable names
+        #
+
+        # First put the names of the color variables 
+        # as strings in these temp vars
 
         VAR_NAME_FG="FG_${PRIMARY_COLOR}${N}"
         VAR_NAME_P_FG="P_FG_${PRIMARY_COLOR}${N}"
@@ -166,8 +177,9 @@ for PRIMARY_COLOR in $PRIMARY_COLORS; do
         VAR_NAME_BG="BG_${PRIMARY_COLOR}${N}"
         VAR_NAME_P_BG="P_BG_${PRIMARY_COLOR}${N}"
 
-        # Use eval trick to make actual variables
-        # from the values of the temp vars above
+        # Use an eval trick to dynamically create 
+        # actual bash variables using the strings
+        # in the values of the temp vars above
 
         eval declare '$VAR_NAME_FG="${FG}${COLOR}"'
         eval declare '$VAR_NAME_P_FG="${NPS}${FG}${COLOR}${NPE}"'
@@ -175,15 +187,27 @@ for PRIMARY_COLOR in $PRIMARY_COLORS; do
         eval declare '$VAR_NAME_BG="${BG}${COLOR}"'
         eval declare '$VAR_NAME_P_BG="${NPS}${BG}${COLOR}${NPE}"'
 
-        # Now the variable is usable, like:
+        #
+        # The color variable is now usable, ex:
         #
         # $FG_RED150
+        # $BG_RED150
+        # $P_FG_RED150
+        # $P_BG_RED150
+        # 
+        # Their values are the full ANSI escape sequences.
         #
 
     done
 
 done
 
+
+#
+# This is a bash function to create new colors that are
+# not part of the default set of colors automatically
+# created.
+#
 
 function MakeNewColor {
 
@@ -265,25 +289,26 @@ function MakeNewColor {
     case $OPERATOR in
 
         "OR")
-            NEW_RGB=$(( $RGB1 | $RGB2 )); ;;
-
+            NEW_RGB=$(( $RGB1 | $RGB2 ))
+            ;;
         "~OR")
-            NEW_RGB=$(( $RGB1 | ~$RGB2 )); ;;
-
+            NEW_RGB=$(( $RGB1 | ~$RGB2 ))
+            ;;
         "AND")
-            NEW_RGB=$(( $RGB1 & $RGB2 )); ;;
-
+            NEW_RGB=$(( $RGB1 & $RGB2 ))
+            ;;
         "~AND")
-            NEW_RGB=$(( $RGB1 & ~$RGB2 )); ;;
-
+            NEW_RGB=$(( $RGB1 & ~$RGB2 ))
+            ;;
         "XOR")
-            NEW_RGB=$(( $RGB1 ^ $RGB2 )); ;;
-
+            NEW_RGB=$(( $RGB1 ^ $RGB2 ))
+            ;;
         "~XOR")
-            NEW_RGB=$(( $RGB1 ^ ~$RGB2 )); ;;
-
+            NEW_RGB=$(( $RGB1 ^ ~$RGB2 ))
+            ;;
         *)
-            echo "Invalid Operator: $OPERATOR"; return 1; ;;
+            echo "Invalid Operator: $OPERATOR"; return 1
+            ;;
 
     esac
 
@@ -306,13 +331,13 @@ function MakeNewColor {
     # Make a new ANSI string
     NEW_COLOR="${NEW_FB}${NEW_R};${NEW_G};${NEW_B}m"
 
-    # If this is a bash-prompt type, wrap it with the tags
+    # If this is a prompt-aware type, wrap it with the special tags
     [[ $COLOR1PVAL -eq 0 ]] && NEW_COLOR="${NPS}${NEW_COLOR}${NPE}"
 
     # Callers should capture this in a variable
     echo $NEW_COLOR
 
-    # Return exit value 0  (success)
+    # Return exit value 0 (success)
     return 0
 
 
