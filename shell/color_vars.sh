@@ -230,7 +230,7 @@ function MakeNewColor {
 
     [[ $VALID_OPERATOR -eq 0 ]] && echo "Missing/Invalid operator: $OPERATOR" && return 1
 
-    # Extract color values from args
+    # Extract color values from args to make vars from
     COLOR1VALS="$(echo $COLOR1 | tr -d '\\e[]m' | awk -F ';' '{print "FB1="$1"\n""R1="$3"\n""G1="$4"\n""B1="$5"\n"}')"
     COLOR1PVAL="$(echo $COLOR1 | grep -q ']'; echo $?)"
 
@@ -241,7 +241,7 @@ function MakeNewColor {
     eval $COLOR1VALS
     eval $COLOR2VALS
 
-    # Check for valid FG/BG data
+    # Check for invalid FG/BG data
     for FB in $FB1 $FB2; do
 
         if [[ $FB -ne 38 ]] && [[ $FB -ne 48 ]]; then
@@ -253,7 +253,7 @@ function MakeNewColor {
 
     done
 
-    # Check for valid RGB color values
+    # Check for invalid RGB color values
     for COLORVAL in $R1 $G1 $B1 $R2 $G2 $B2; do
 
         if [[ $COLORVAL -lt 0 ]] || [[ $COLORVAL -gt 255 ]]; then
@@ -273,7 +273,7 @@ function MakeNewColor {
 
     fi
 
-    # Check that all args are the same PType
+    # Check color args are the same PType
     if [[ $COLOR1PVAL -ne $COLOR2PVAL ]]; then
 
         echo "All P-type values must be the same: $COLORPVAL1 != $COLORPVAL2"
@@ -281,7 +281,7 @@ function MakeNewColor {
 
     fi
 
-    # Wold you believe it?  Bash supports bit shifting.
+    # Would you believe it?  Bash supports bit shifting.
 
     RGB1=$(( $(( $R1 << 16 )) | $(( $G1 << 8 )) | $(( $B1 << 0 )) ))
     RGB2=$(( $(( $R2 << 16 )) | $(( $G2 << 8 )) | $(( $B2 << 0 )) ))
